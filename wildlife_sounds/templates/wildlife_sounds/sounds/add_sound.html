@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter des sons</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+
+    <link rel="icon" type="image/x-icon" href="/media/86_icon.svg">
+    {% load static %}
+
+    <script src="{% static 'wildlife_sounds/sounds/js/add_sound.js' %}" type="module"></script>
+
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/sounds/css/add_sound.css' %}">
+
+</head>
+
+<body>
+    <h1>Ajouter des sons</h1>
+
+    <div class="form-container">
+
+        
+        <div class='form'>
+            <p class="text-form">Nom (scientifique ou vernaculaire)</p> <input type="text" id="name">
+        </div>
+
+        <div class='form'>
+            <p class="text-form">Type</p>
+            <input type="radio" id="call" name="type">
+            <label for="Call">Call</label>
+
+            <input type="radio" id="song" name="type" checked=true>
+            <label for="Song">Song</label>
+        </div>
+
+        <div class='form'>
+            <p class="text-form">Pays</p> <input type="text" id="country">
+        </div>
+
+        <div class='form'>
+            <p class="text-form">Son</p> <input type="file" id="sound" accept=".mp3, .wav, .wave, .ogg" />
+        </div>
+
+
+        <div class='form'>
+            <button id="submit">Envoyer</button>
+        </div>
+    
+    </div>
+
+    
+    
+
+
+
+
+
+</body>

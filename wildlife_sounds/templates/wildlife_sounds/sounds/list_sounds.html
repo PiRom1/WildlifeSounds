@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des sons</title>
+    <link rel="icon" type="image/x-icon" href="/media/86_icon.svg">
+    {% load static %}
+
+    <script src="{% static 'wildlife_sounds/sounds/js/list.js' %}" type="module"></script>
+
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/sounds/css/list.css' %}">
+
+</head>
+
+<body>
+    <h1>Liste des sons</h1>
+
+    <div class="list-sounds">
+        <a href="add_sound">Ajouter un son</a>
+        <table>
+
+            <thead>
+              <tr>
+                <th scope="col">Nom vernaculaire</th>
+                <th scope="col"></th>
+                <th scope="col">Nom scientifique</th>
+                <th scope="col">Ordre</th>
+                <th scope="col">Famille</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Taxon</th>
+                <th scope="col">Type</th>
+                <th scope="col">Pays</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for sound in sounds %}
+                    <tr>
+                        <th scope="row">{{sound.specie.vernacular_name}}</th>
+                        <td class="speaker" sound={{sound.sound.url}}>&#128266</td>
+                        <td>{{sound.specie.scientific_name}}</td>
+                        <td>{{sound.specie.order.order_name}}</td>
+                        <td>{{sound.specie.family.family_name}}</td>
+                        <td>{{sound.specie.genus.genus_name}}</td>
+                        <td>{{sound.specie.taxon.taxon_name}}</td>
+                        <td>{{sound.type}}</td>
+                        <td>{{sound.country}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+    
+</body>

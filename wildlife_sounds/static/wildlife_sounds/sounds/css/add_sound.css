@@ -1,0 +1,27 @@
+.form {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.text-form {
+    padding-right: 10px;
+}
+
+label {
+    color: ivory;
+}
+
+input[type="file"] {
+    color: white;
+}
+
+
+.form-container {
+    position: absolute;
+    left: 25%;
+    background-color: rgba(222, 204, 181, 0.775);
+    width: 50%;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}

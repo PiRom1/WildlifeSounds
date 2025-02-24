@@ -1,0 +1,36 @@
+<head>
+    <meta charset="utf-8" />
+
+    <title>Login</title>
+    <link rel="icon" type="image/x-icon" href="/media/86_icon.svg">
+
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Sonsie+One"
+        rel="stylesheet"
+        type="text/css" />
+
+    {% load static %}
+    
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/login/css/login.css' %}">
+    
+
+</head>
+
+<body>
+    
+
+    <h1>Page de connexion</h1>
+
+        <div class="form-container">
+            <form action="" method="post" class="form">
+                {% csrf_token %}
+
+                {{ login_form }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+
+</body>
+
+<!-- <a href = "/">Retour aux messages</a> -->

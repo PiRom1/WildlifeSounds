@@ -1,0 +1,7 @@
+
+Django==5.1.6
+django-clear-caches==0.1.0
+django-clearcache==1.2.1
+django-extensions==3.2.3
+djangorestframework==3.15.2
+
