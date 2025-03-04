@@ -24,7 +24,12 @@ def list_sounds(request):
 def add_sound(request):
     url = "wildlife_sounds/sounds/add_sound.html"
 
-    context = {}
+    species = Specie.objects.all()
+    scientific_names = list(species.values_list('scientific_name', flat = True))
+    vernacular_names = list(species.values_list('vernacular_name', flat = True))
+    all_names = list(set(scientific_names + vernacular_names))
+
+    context = {'all_names' : json.dumps(all_names)}
 
     return render(request, url, context)
 

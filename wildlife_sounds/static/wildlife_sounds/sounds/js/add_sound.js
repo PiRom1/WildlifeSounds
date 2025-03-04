@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const csrftoken = document.querySelector('[name="csrf-token"]').content;
 
+
+    // Send form
+
     let name, call, song, country, sound, type
     const submit_button = document.getElementById('submit');
 
@@ -39,6 +42,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         })
     
     })
+
+
+    // Autocomplete names
+
+    const data = document.getElementById('data');
+    const all_names = data.getAttribute('names');
 
 
 })
