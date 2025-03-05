@@ -14,6 +14,7 @@ urlpatterns = [
 
                path("lists", sound_views.user_lists, name = "user_lists"),
                path("lists/<int:pk>", sound_views.detail_list, name = "user_lists"),
+               path("lists/<int:pk>/test", sound_views.test_list, name = "test_list"),
                path("list/add_specie_to_list", sound_views.add_sound_to_list, name = "add_sound_to_list"),
             
             # LOAD DATA

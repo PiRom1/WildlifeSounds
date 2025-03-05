@@ -153,3 +153,34 @@ def add_sound_to_list(request):
                          'message': 'Succes',
                          'available_names' : json.dumps(available_names)},
                          status=200)
+
+
+@login_required
+def test_list(request, pk=None):
+
+    liste = List.objects.get(id=pk)
+
+    sounds = []
+
+    species = SpecieForList.objects.filter(list=liste).order_by('?')
+
+    for specie in species:
+        specie_sounds = SpecieSound.objects.filter(specie = specie.specie)
+
+        if specie_sounds:
+            
+            list_sounds = [specie_sound.sound.url for specie_sound in specie_sounds]
+            sounds.append({'specie' : specie.specie.vernacular_name,
+                           'sounds' : json.dumps(list_sounds)})
+
+        
+
+
+    url = "wildlife_sounds/sounds/test_list.html"
+
+    context = {'pk' : pk,
+               'liste' : liste,
+               'species' : species,
+               'sounds' : sounds}
+
+    return render(request, url, context)

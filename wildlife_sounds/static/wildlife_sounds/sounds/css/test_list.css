@@ -1,0 +1,21 @@
+h2 {
+    color: ivory;
+text-align: center;
+margin-top: 12%;
+}
+
+
+.speaker {
+    font-size: 50px;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+
+.next {
+    font-size: 50px;
+    text-align: center;
+    color: ivory;
+    cursor: pointer;
+}

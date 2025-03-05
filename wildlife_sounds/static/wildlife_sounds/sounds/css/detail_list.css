@@ -34,7 +34,8 @@ table {
 
 
 thead th {
-    background-color: rgb(244, 227, 227);
+    background-color: rgb(92, 88, 88);
+    color: ivory;
 }
 
 tr {
@@ -53,4 +54,19 @@ tr:nth-child(odd) {
 .available-species {
     color: black;
     font-size: 20px;
+}
+
+
+.blindtest {
+    margin-left: 45%;
+    padding: 8px;
+    width: 10%;
+    border-radius: 5px;
+    background-color: antiquewhite;
+    color: black;
+}
+
+.blindtest:hover {
+    background-color: rgba(250, 235, 215, 0.80);
+    color: rgb(45, 44, 44);
 }
