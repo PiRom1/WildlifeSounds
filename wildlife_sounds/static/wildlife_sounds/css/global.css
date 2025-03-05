@@ -3,9 +3,11 @@ body {
     background-size: cover;  /* Étend l'image pour couvrir tout l'écran */
     background-position: center;  /* Centre l'image */
     background-repeat: no-repeat;  /* Empêche la répétition */
+    background-attachment: fixed;  /* L'image de fond reste fixe quand on défile */
     height: 100vh; /* Assure que le body prend toute la hauteur de l'écran */
     margin: 0; /* Supprime les marges par défaut */
 }
+
 
 h1 {
     color: ivory;

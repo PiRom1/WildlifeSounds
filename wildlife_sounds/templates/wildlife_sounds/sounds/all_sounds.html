@@ -17,6 +17,10 @@
 <body>
     <h1>Liste des sons</h1>
 
+    <div class='text-search'>
+        <input type='text' id='text_search' placeholder="Recherche ..."/>
+    </div>
+
     <div class="list-sounds">
         <a href="add_sound">Ajouter un son</a>
         <table>
@@ -36,7 +40,18 @@
             </thead>
             <tbody>
                 {% for sound in sounds %}
-                    <tr>
+                
+                    <tr 
+                    class='table-row' 
+                    vernacular_name="{{sound.specie.vernacular_name}}"
+                    scientific_name="{{sound.specie.scientific_name}}"
+                    order_name="{{sound.specie.order.order_name}}"
+                    family_name="{{sound.specie.family.family_name}}"
+                    genus_name="{{sound.specie.genus.genus_name}}"
+                    taxon_name="{{sound.specie.taxon.taxon_name}}"
+                    type_name="{{sound.type}}"
+                    country_name="{{sound.country}}"
+                    >
                         <th scope="row">{{sound.specie.vernacular_name}}</th>
                         <td class="speaker" sound={{sound.sound.url}}>&#128266</td>
                         <td>{{sound.specie.scientific_name}}</td>

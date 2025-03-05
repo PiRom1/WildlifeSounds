@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des sons</title>
+    <link rel="icon" type="image/x-icon" href="/media/86_icon.svg">
+    {% load static %}
+
+    <script src="{% static 'wildlife_sounds/load_data/js/load_data.js' %}" type="module"></script>
+
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/load_data/css/load_data.css' %}">
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/login/css/login.css' %}">
+
+</head>
+
+<body>
+    <h1>Importer des données de XenoCanto</h1>
+
+    <button id='button' class='button'><strong>IMPORTER</strong></button>
+    <div class='loader' style='display: none;' id='loader'></div>
+    
+    
+</body>

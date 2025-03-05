@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Specie, SpecieSound, Order, Genus, Family, Taxon, User
+from .models import Specie, SpecieSound, Order, Genus, Family, Taxon, User, List, SpecieForList
 
 
 @admin.register(User)
@@ -43,3 +43,13 @@ class GenusAdmin(admin.ModelAdmin):
 class TaxonAdmin(admin.ModelAdmin):
     list_display = ("taxon_name", "description")
     search_fields = ("taxon_name",)
+
+
+
+@admin.register(List)
+class ListAdmin(admin.ModelAdmin):
+    list_display = ("name", "description", "user")
+
+@admin.register(SpecieForList)
+class SpecieForListAdmin(admin.ModelAdmin):
+    list_display = ("list", "specie")

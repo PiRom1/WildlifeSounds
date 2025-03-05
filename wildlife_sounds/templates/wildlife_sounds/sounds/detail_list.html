@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+
+    <link rel="icon" type="image/x-icon" href="/media/86_icon.svg">
+    {% load static %}
+
+    <script src="{% static 'wildlife_sounds/sounds/js/detail_list.js' %}" type="module"></script>
+
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/sounds/css/detail_list.css' %}">
+
+</head>
+
+<body>
+    <div id='data' available-species="{{available_species}}" pk-list="{{pk}}"></div>
+
+    <h1>Liste {{pk}}</h1>
+
+    <div class="table-container">
+        <table>
+
+            <thead>
+            <tr>
+                <th scope="col">Espèces</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for specie in list_species %}
+                    <tr>
+                        <th scope="row">{{specie.vernacular_name}}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class='new-specie'>
+            <input id='new-specie' type='text' style='display: none';>
+            {% for specie in available_species %}
+                <ul>
+                    <div id='available-species-div' class='available-species'></div>
+                </ul>
+            {% endfor %}
+        </div>
+        <strong class='plus' id='plus'>+</strong>
+
+    </div>
+
+
+
+
+</body>

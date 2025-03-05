@@ -56,17 +56,29 @@ class Taxon(models.Model):
     taxon_name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000, default='', null=True, blank=True)
 
+    def __str__(self):
+        return self.taxon_name
+
 class Order(models.Model):
     order_name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000, default='', null=True, blank=True)
+
+    def __str__(self):
+        return self.order_name
 
 class Family(models.Model):
     family_name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000, default='', null=True, blank=True)
 
+    def __str__(self):
+        return self.family_name
+
 class Genus(models.Model):
     genus_name = models.CharField(max_length=100)
     description = models.CharField(max_length=1000, default='', null=True, blank=True)
+
+    def __str__(self):
+        return self.genus_name
 
 
 
@@ -79,6 +91,9 @@ class Specie(models.Model):
     taxon = models.ForeignKey(Taxon, on_delete=models.SET_NULL, null=True)
     description = models.CharField(max_length=1000, default='', null=True, blank=True)
 
+    def __str__(self):
+        return self.vernacular_name
+
 
 class SpecieSound(models.Model):
     sound = models.FileField(upload_to="SpecieSound/")
@@ -87,8 +102,29 @@ class SpecieSound(models.Model):
     type = models.CharField(max_length=100, choices=TYPES)
     country = models.CharField(max_length=100, default="", null=True, blank=True)
 
-    
+    def __str__(self):
+        return f"{self.specie.vernacular_name} - {self.type} ({self.country})" 
 
+    
+class List(models.Model):
+    # List of birds you want to learn.
+    name = models.CharField(max_length=100)
+    description = models.TextField(default = '', null = True, blank = True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name} - {self.user.username}"
+
+
+
+
+class SpecieForList(models.Model):
+    specie = models.ForeignKey(Specie, on_delete=models.CASCADE)
+    list = models.ForeignKey(List, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.specie.vernacular_name} - {self.list.name}"
+    
 
 
 

@@ -27,3 +27,8 @@ tr:nth-child(odd) {
 .list-sounds {
     padding: 20px;
 }
+
+
+.text-search {
+    padding-left: 20px;
+}
