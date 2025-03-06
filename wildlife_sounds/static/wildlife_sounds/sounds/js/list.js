@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 audio.pause();
                 audio.currentTime = 0;
             }
+            console.log('pseaker url ', speaker_url);
             audio = new Audio(speaker_url);
             audio.play();
         })

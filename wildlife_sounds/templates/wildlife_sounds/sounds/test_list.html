@@ -21,6 +21,8 @@
 
     <h1> Blindtest </h1>
 
+    <div id="data" nb_species="{{nb_species}}" pk="{{pk}}"></div>
+
     {% comment %} Data {% endcomment %}
     {% for sound in sounds %}
         <div class="sound" specie="{{sound.specie}}" sounds="{{sound.sounds}}"></div>
@@ -28,7 +30,7 @@
 
 
     <h2>
-        Espèce n°<span id='counter'>1</span>
+        Espèce n°<span id='counter'>1</span> / {{nb_species}}
     </h2>
     <div class = 'speaker' id='speaker'>
         &#128266;
@@ -36,6 +38,17 @@
 
     <div class = 'next' id='next'>
         &#11166;
+    </div>
+
+    <div class="mystery_bird">
+        <img id="mystery_bird" src="{% static 'wildlife_sounds/img/mystery_bird.png' %}"/>
+        <span id='bird_name' class='bird_name'></span>
+    </div>
+    
+        
+
+    <div class='terminer' id='terminer'>
+        Terminer
     </div>
 
 
