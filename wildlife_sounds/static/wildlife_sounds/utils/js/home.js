@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const left = document.getElementById('left');
     console.log(paths[id]);
-    left.style.cursor = `url(${paths[id]}) 16 16, auto`;
+    // left.style.cursor = `url(${paths[id]}) 16 16, auto`;
 
 
     document.addEventListener("wheel", function (event) {
@@ -25,9 +25,22 @@ document.addEventListener('DOMContentLoaded', async function () {
             id = 0;
         }
 
-        left.style.cursor = `url(${paths[id]}) 16 16, auto`;
 
     });
+
+    let space_pressed = false;
+    document.addEventListener('keydown', function(e) {
+        if (e.code === 'Space') {
+            space_pressed = true;
+            left.style.cursor = `url(${paths[id]}) 16 16, auto`;
+        }
+    })
+    document.addEventListener('keyup', function(e) {
+        if (e.code === 'Space') {
+            space_pressed = false;
+            left.style.cursor = 'initial';
+        }
+    })
     
 
 })

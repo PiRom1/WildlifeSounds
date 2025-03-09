@@ -10,7 +10,7 @@ import os
 import random as rd
 from django.contrib.staticfiles import finders
 
-@login_required
+@login_required(login_url='login')
 def home(request):
 
     path = finders.find('wildlife_sounds/birds_svg')
@@ -26,7 +26,8 @@ def home(request):
 
     url = "wildlife_sounds/utils/home.html"
 
-    context = {'path' : json.dumps(path_birds_svg)}
+    context = {'path' : json.dumps(path_birds_svg),
+               'user' : request.user}
 
     return render(request, url, context)
 

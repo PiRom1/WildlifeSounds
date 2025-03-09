@@ -20,7 +20,7 @@ def connexion(request):
         if user is not None:
             login(request, user)
             print(user)
-            return HttpResponseRedirect("/list")
+            return HttpResponseRedirect("/")
     
     else:
         login_form = LoginForm()

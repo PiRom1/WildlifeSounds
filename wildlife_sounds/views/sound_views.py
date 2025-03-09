@@ -6,6 +6,7 @@ from django.db.models import Q
 import json
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
 import json
+from wildlife_sounds.utils.get_data import load_data_specific_bird_xenocanto
 
 
 # Create your views here.
@@ -148,6 +149,8 @@ def add_sound_to_list(request):
 
     available_names = get_available_species_name(liste)
 
+    print("chargement des sons ... ")
+    load_data_specific_bird_xenocanto(specie.scientific_name)
     
 
 

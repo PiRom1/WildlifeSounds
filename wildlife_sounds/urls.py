@@ -28,6 +28,6 @@ urlpatterns = [
             # LOAD DATA
                path('load_data', load_data_views.load_data, name = 'load_data'),
                path('load_data_xeno_canto', load_data_views.load_data_xeno_canto, name = 'load_data_xenocanto'),
-
+               path('load_data/<str:name>', load_data_views.load_bird, name = 'load_bird')
 
                ]
