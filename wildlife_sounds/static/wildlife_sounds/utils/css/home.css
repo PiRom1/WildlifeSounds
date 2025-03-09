@@ -7,7 +7,7 @@
 
 .left {
     width: 40%;
-    background-image: url('/static/wildlife_sounds/img/bouvreuil.png');
+    background-image: url('/static/wildlife_sounds/img/bouvreuil.PNG');
     background-size: cover;
     background-position: center;
     border-right: 5px solid ivory;
