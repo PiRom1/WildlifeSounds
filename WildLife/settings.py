@@ -145,9 +145,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "wildlife_sounds/static"),
-# ]
+
 
 STATIC_ROOT = os.path.join(BASE_DIR, "wildlife_sounds/static")  # Dossier pour collectstatic
 
