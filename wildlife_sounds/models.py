@@ -126,6 +126,19 @@ class SpecieForList(models.Model):
         return f"{self.specie.vernacular_name} - {self.list.name}"
     
 
+class Score(models.Model):
+    score = models.IntegerField('score')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    list = models.ForeignKey(List, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.score} ({self.date} / {self.user.username})"
+
+
+
+class UnknownSpecie(models.Model):
+    scientific_name = models.CharField(max_length=100)
 
 
 # Create your models here.

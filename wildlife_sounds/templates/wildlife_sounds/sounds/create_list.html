@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create list</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+
+    <link rel="icon" type="image/x-icon" href="/media/86_icon.svg">
+    {% load static %}
+
+
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/sounds/css/create_list.css' %}">
+
+</head>
+
+<body>
+    <div id='data' available-species="{{available_species}}" pk-list="{{pk}}"></div>
+
+    <h1>Création d'une liste</h1>
+
+    <a href="/" class="home">
+        Accueil
+    </a>
+
+    <div class="form">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button">Créer la liste</button>
+        </form>
+    </div>
+    
+</body>

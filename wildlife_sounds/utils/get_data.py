@@ -1,5 +1,5 @@
 import requests
-from wildlife_sounds.models import Taxon, Order, Genus, Family, Specie, SpecieSound
+from wildlife_sounds.models import Taxon, Order, Genus, Family, Specie, SpecieSound, UnknownSpecie
 from django.http import HttpResponse
 from django.core.files.base import ContentFile
 
@@ -24,7 +24,7 @@ def load_data_from_xeno_canto():
     not_working_species = []
     for n_page in range(n_pages):
         page = n_page + 1
-        print(f'requête n°{page}')
+        print(f'requête n°{page} / {n_pages}')
         r = requests.get(API_URL, params={'query': QUERY, 'page' : page})
         json = r.json()
 
@@ -41,10 +41,11 @@ def load_data_from_xeno_canto():
                     print(f"L'espèce {name} n'était pas présente en base de données. \n Ajout en cours ...")
 
                     specie_data = get_data_from_name(name)
-
+                    print("données récupérées")
                     if not specie_data: # If no result
                         print("Pas d'informations trouvées sur l'espèce ...")
                         not_working_species.append(name)
+                        UnknownSpecie.objects.create(scientific_name = name)
                         continue
 
                     print("data : ", specie_data)
@@ -56,7 +57,7 @@ def load_data_from_xeno_canto():
                     if order: # If order is returned by the bird API
 
                         # If order is not present in database
-                        if not Order.objects.filter(order_name__icontains=specie_data.get('order_name')):
+                        if not Order.objects.filter(order_name=specie_data.get('order_name')):
                                 print(f"L'ordre {specie_data.get('order_name')} n'était pas présent en base de données. \n Ajout en cours ...")
                                 order = Order.objects.create(order_name = specie_data.get('order_name'))
                         else:
@@ -65,7 +66,6 @@ def load_data_from_xeno_canto():
                     else: # If order is not returned by the bird API
                          order, created =  Order.objects.get_or_create(order_name = 'Unknown')
                     
-                    order = specie_data.get('order_name')
 
                     if family: # If family is returned by the bird API
 
@@ -81,7 +81,7 @@ def load_data_from_xeno_canto():
 
                     if genus: # If genus is returned by the bird API
                         # If genus is not present in database
-                        if not Genus.objects.filter(genus_name__icontains=specie_data.get('genus_name')):
+                        if not Genus.objects.filter(genus_name=specie_data.get('genus_name')):
                             print(f"Le genre {specie_data.get('genus_name')} n'était pas présent en base de données. \n Ajout en cours ...")
                             genus = Genus.objects.create(genus_name = specie_data.get('genus_name'))
                         else:
@@ -91,7 +91,19 @@ def load_data_from_xeno_canto():
                         genus, created = Genus.objects.get_or_create(genus_name = 'Unknown')
 
                     taxon = Taxon.objects.get(taxon_name = 'Oiseau')
-                    specie = Specie.objects.create(vernacular_name = specie_data.get('vernacular_name'),
+
+                    vernacular_name = specie_data.get('vernacular_name')
+
+                    if not vernacular_name:
+                        print(f"L'espèce {name} n'a pas de nom vernaculaire.")
+                        UnknownSpecie.objects.create(scientific_name = name)
+
+                        continue # Passer à l'itération suivante si l'espèce n'a pas de nom vernaculaire.
+                    
+                    if not vernacular_name or not name:
+                        continue            
+
+                    specie = Specie.objects.create(vernacular_name = vernacular_name,
                                           scientific_name = name,
                                           order = order,
                                           family = family,

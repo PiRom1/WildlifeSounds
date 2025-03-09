@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listes</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+
+    <link rel="icon" type="image/x-icon" href="/media/86_icon.svg">
+    {% load static %}
+
+    <script src="{% static 'wildlife_sounds/sounds/js/add_sound.js' %}" type="module"></script>
+
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/sounds/css/user_lists.css' %}">
+
+</head>
+
+<body>
+
+    
+    <a href="/" class="home">
+        Accueil
+    </a>
+    
+
+    {% if method == 'train' %}
+        <h1>S'entraîner sur une liste</h1>
+    {% else %}
+        <h1>Se tester sur une liste</h1>
+    {% endif %}
+
+    <div class="create-list">
+        <a href="/create_list">Créer une liste</a>
+    </div>
+
+    <div class="lists">
+        <ul>
+            {% for list in lists %}
+                <li>
+                    <a href="/lists/{{list.id}}/{{method}}">{{list.name}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+   
+
+
+
+
+</body>

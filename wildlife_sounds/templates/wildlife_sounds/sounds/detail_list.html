@@ -20,10 +20,18 @@
 <body>
     <div id='data' available-species="{{available_species}}" pk-list="{{pk}}"></div>
 
-    <h1>Liste {{pk}}</h1>
+    <a href="/" class="home">
+        Accueil
+    </a>
 
-    <a href="/lists/{{pk}}/test" class="blindtest">Lancer un blindtest !</a>
+    <h1>{{liste.name}}</h1>
+    <h2>{{liste.description}}</h2>
 
+    <div class="button-container">
+        <a href="/lists/{{pk}}/train">S'entraîner</a>    
+        <a href="/lists/{{pk}}/test">Lancer un blindtest !</a>
+    </div>
+    
     <div class="table-container">
         <table>
 

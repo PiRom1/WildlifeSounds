@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Specie, SpecieSound, Order, Genus, Family, Taxon, User, List, SpecieForList
+from .models import Specie, SpecieSound, Order, Genus, Family, Taxon, User, List, SpecieForList, Score, UnknownSpecie
 
 
 @admin.register(User)
@@ -53,3 +53,13 @@ class ListAdmin(admin.ModelAdmin):
 @admin.register(SpecieForList)
 class SpecieForListAdmin(admin.ModelAdmin):
     list_display = ("list", "specie")
+
+
+@admin.register(Score)
+class ScoreAdmin(admin.ModelAdmin):
+    list_display = ("score", "user", "list", "date")
+
+
+@admin.register(UnknownSpecie)
+class UnknownSpecieAdmin(admin.ModelAdmin):
+    list_display = ("scientific_name",)

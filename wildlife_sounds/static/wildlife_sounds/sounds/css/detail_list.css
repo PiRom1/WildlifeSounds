@@ -57,16 +57,24 @@ tr:nth-child(odd) {
 }
 
 
-.blindtest {
-    margin-left: 45%;
-    padding: 8px;
-    width: 10%;
-    border-radius: 5px;
-    background-color: antiquewhite;
-    color: black;
+.button-container {
+    margin-top: 3%;
+    margin-left: 40%;
+    display: flex; /* Utilisation de flexbox pour aligner les éléments horizontalement */
+    gap: 10px; /* Ajoute un espace entre les boutons */
 }
 
-.blindtest:hover {
-    background-color: rgba(250, 235, 215, 0.80);
-    color: rgb(45, 44, 44);
+.button-container a {
+    display: inline-block; /* Assure que les liens se comportent comme des blocs en ligne */
+    padding: 10px 20px; /* Ajoute du rembourrage pour une meilleure apparence */
+    text-decoration: none; /* Supprime le soulignement du texte */
+    background-color: rgb(250, 235, 215); /* Couleur de fond bleue */
+    color: black; /* Couleur du texte en blanc */
+    border-radius: 5px; /* Arrondit les coins */
+    text-align: center; /* Centre le texte */
 }
+
+.button-container a:hover {
+    background-color: rgb(215, 191, 158); /* Assombrit le bouton au survol */
+}
+

@@ -1,9 +1,13 @@
 document.addEventListener('DOMContentLoaded', async function () {
+    const csrftoken = document.querySelector('[name="csrf-token"]').content;
 
+    //  Data
     const data = document.getElementById('data');
     const nb_species = data.getAttribute('nb_species');
     const pk = data.getAttribute('pk');
+    
 
+    // Audio
     let audio = new Audio();
 
     function play_sound(sound) {
@@ -16,8 +20,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         audio = new Audio(sound);
         audio.play();
     };
-    
 
+
+
+    let html_score = document.getElementById('score');
+    let score = 0;
     const terminer = document.getElementById('terminer');
     const next = document.getElementById('next');
     const speaker = document.getElementById('speaker');
@@ -25,65 +32,145 @@ document.addEventListener('DOMContentLoaded', async function () {
     const counter = document.getElementById('counter');
 
     let id = 0;
+    let specie_sounds, vernacular_name, scientific_name
 
-    let specie_sounds = JSON.parse(all_sounds[id].getAttribute('sounds'));
-    let specie_name = all_sounds[id].getAttribute('specie');
-    console.log(specie_name);
+    const result = document.getElementById('result');
+
+    function show_result_popup(success, vernacular_name, scientific_name, score) {
+        if (success) {
+            result.style.backgroundColor = '#7db856ca';
+            result.innerHTML = 'Bravo !<br>'
+        }
+        else {   
+            result.style.backgroundColor = '#FF746Cca';
+            result.innerHTML = 'Dommage ...<br>'
+        }
+
+        result.innerHTML += `${vernacular_name} <i>${scientific_name}</i><br>`
+        if (score > 1) {
+            result.innerHTML += `+${score} points`;
+        }
+        else {
+            result.innerHTML += `+${score} point`;
+        }
+        
+
+        result.style.display = 'block';
+
+    }
+
+
+
+
+    function get_specie_data(id) {
+        let specie_sounds = JSON.parse(all_sounds[id].getAttribute('sounds'));
+        let vernacular_name = all_sounds[id].getAttribute('vernacular_specie');
+        let scientific_name = all_sounds[id].getAttribute('scientific_specie');
+    
+        return {
+            specie_sounds: specie_sounds,
+            vernacular_name: vernacular_name,
+            scientific_name: scientific_name
+        };
+    }
+    
+    let specieData = get_specie_data(id);
+    
+    console.log(specieData);
+    
+
     let sound;
     
     speaker.addEventListener('click', function() {
-        sound = specie_sounds[Math.floor(Math.random() * specie_sounds.length)]
+        sound = specieData.specie_sounds[Math.floor(Math.random() * specieData.specie_sounds.length)]
         play_sound(sound);
     })
 
 
-    next.addEventListener('click', function() {
+    // Validate
+
+    const text_input = document.getElementById('text-input');
+    const validate = document.getElementById('validate');
+
+    validate.addEventListener('click', function() {
+
+        if (text_input.value.toLowerCase() === specieData.vernacular_name.toLowerCase()) {
+            score += 1;
+            console.log('nom vernaculaire ok');
+            show_result_popup(true, specieData.vernacular_name, specieData.scientific_name, 1);
+
+        }
+        else if (text_input.value.toLowerCase() === specieData.scientific_name.toLocaleLowerCase()) {
+            score += 3;
+            console.log('nom scientifique ok !');
+            show_result_popup(true, specieData.vernacular_name, specieData.scientific_name, 3);
+        }
+        else {
+            console.log('NUL');
+            show_result_popup(false, specieData.vernacular_name, specieData.scientific_name, 0);
+        }
+
+        html_score.innerHTML = score;
+
+
+        text_input.value = '';
+
         // Incremente counter
         id += 1;
         counter.innerHTML = id+1;
 
-        mystery_bird.style.display = 'block';
-        bird_name.innerHTML = '';
-        bird_name.style.display = 'none';
-    
-        specie_name = all_sounds[id].getAttribute('specie');
-        specie_sounds = JSON.parse(all_sounds[id].getAttribute('sounds'));
-        audio.pause();
-        audio.currentTime = 0;
-
-        console.log(specie_name);
-
         
-        if ((id+1).toString() === nb_species) {
-            console.log('finito');
-            next.style.display = 'none';
-            terminer.style.display = 'block';
+        if (id + 1 <= parseInt(nb_species)) {
+            specieData = get_specie_data(id);
+            audio.pause();
+            audio.currentTime = 0;
+
+
+            console.log(specieData);
         }
 
+        if (id + 1 === parseInt(nb_species) + 1) {
+            counter.innerHTML = id;
+            console.log('finito');
+            validate.style.display = 'none';
+            terminer.style.display = 'block';
+            text_input.style.display = 'none';
+            console.log('score : ', score);
+        }
+
+
+
+        
         
     })
 
 
     terminer.addEventListener('click', function() {
-        window.location.href = `/lists/${pk}`;
+
+        
+        fetch('/record_score', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest', // Ajoute cet en-tête pour indiquer qu'il s'agit d'une requête AJAX
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({score, pk})
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.success) {
+                window.location.href = '/lists';
+            }
+            else {
+                console.log(data.error)
+            }
+        })
+    
     })
 
 
-    const mystery_bird = document.getElementById('mystery_bird');
-    const bird_name = document.getElementById('bird_name');
 
-    mystery_bird.addEventListener('click', function() {
-        mystery_bird.style.display = 'none';
-        bird_name.style.display = 'block';
-        bird_name.innerHTML = specie_name;
-    })
-
-
-
-    // sounds.forEach(sound => {
-    //     let specie_name = sound.getAttribute('specie');
-    //     let specie_sounds = JSON.parse(sound.getAttribute('sounds'));
-    //     console.log(specie_name, specie_sounds);
-    // })
 
 })

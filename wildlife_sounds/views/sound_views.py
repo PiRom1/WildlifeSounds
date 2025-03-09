@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from wildlife_sounds.models import *
+from wildlife_sounds.forms import Listform
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 import json
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
 import json
+
 
 # Create your views here.
 
@@ -25,7 +27,7 @@ def all_sounds(request):
 
     url = "wildlife_sounds/sounds/all_sounds.html"
 
-    sounds = SpecieSound.objects.all()
+    sounds = SpecieSound.objects.all()[0:50]
 
     context = {"sounds" : sounds}
     return render(request, url, context)
@@ -156,7 +158,7 @@ def add_sound_to_list(request):
 
 
 @login_required
-def test_list(request, pk=None):
+def train_list(request, pk=None):
 
     liste = List.objects.get(id=pk)
 
@@ -174,6 +176,38 @@ def test_list(request, pk=None):
                            'sounds' : json.dumps(list_sounds)})
 
 
+    url = "wildlife_sounds/sounds/train_list.html"
+
+    context = {'pk' : pk,
+               'liste' : liste,
+               'sounds' : sounds,
+               'nb_species' : len(sounds)}
+
+    return render(request, url, context)
+
+
+
+@login_required
+def test_list(request, pk=None):
+
+    liste = List.objects.get(id=pk)
+
+    sounds = []
+
+    species = SpecieForList.objects.filter(list=liste).order_by('?')
+
+    for specie in species:
+        specie_sounds = SpecieSound.objects.filter(specie = specie.specie)
+        
+        if specie_sounds:
+            
+            list_sounds = [specie_sound.sound.url for specie_sound in specie_sounds]
+            sounds.append({'vernacular_specie' : specie.specie.vernacular_name, 
+                           'scientific_specie' : specie.specie.scientific_name,
+                           'sounds' : json.dumps(list_sounds)})
+        print([sound['vernacular_specie'] for sound in sounds])
+
+
     url = "wildlife_sounds/sounds/test_list.html"
 
     context = {'pk' : pk,
@@ -182,3 +216,52 @@ def test_list(request, pk=None):
                'nb_species' : len(sounds)}
 
     return render(request, url, context)
+
+
+
+@login_required
+def create_list(request):
+    print(request.POST)
+    if request.method == 'GET': # Affichage
+        list_form = Listform()
+
+    elif request.method == 'POST':
+        list_form = Listform(request.POST)
+        form = list_form.save(commit=False)
+        form.user = request.user
+        form.save()
+        print('redirection')
+        return HttpResponseRedirect('/lists')
+
+
+    url = "wildlife_sounds/sounds/create_list.html"
+
+    context = {'form' : list_form}
+
+    return render(request, url, context)
+
+
+@login_required
+def train(request):
+
+    
+    url = "wildlife_sounds/sounds/train_or_test.html"
+
+    context = {'lists' : List.objects.filter(user=request.user),
+               'method' : 'train'}
+
+    return render(request, url, context)
+
+
+
+@login_required
+def test(request):
+
+    
+    url = "wildlife_sounds/sounds/train_or_test.html"
+
+    context = {'lists' : List.objects.filter(user=request.user),
+               'method' : 'test'}
+
+    return render(request, url, context)
+

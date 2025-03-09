@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wildlife</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+
+    <link rel="icon" type="image/x-icon" href="/media/86_icon.svg">
+    {% load static %}
+
+    <script src="{% static 'wildlife_sounds/utils/js/home.js' %}" type="module"></script>
+
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/utils/css/home.css' %}">
+
+</head>
+
+<body>
+    
+    <div id="data" path="{{path}}"></div>
+    
+    <div class="container">
+
+        <div class="left" id="left">
+            
+        </div>
+
+
+        <div class="right">
+            <h1>Bienvenue !</h1>
+
+            <div class="rubriques">
+                <a class="rubrique" href="/train">
+                    S'entraîner
+                </a>
+                
+                <a class="rubrique" href="/test">
+                    Se tester
+                </a>
+
+                <a class="rubrique" href="/lists">
+                    Mes listes
+                </a>
+
+                <a class="rubrique" href="/all">
+                    Tous les sons
+                </a>
+
+                <a class="rubrique" href="/scores">
+                    Mes scores
+                </a>
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+
+    
+</body>

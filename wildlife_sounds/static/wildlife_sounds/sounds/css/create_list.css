@@ -1,0 +1,10 @@
+
+
+.form {
+    background-color: rgba(247, 229, 206, 0.75);
+    width: 30%;
+    text-align: center;
+    border-radius: 5px;
+    margin-left: 35%;
+    padding: 10px;
+}
