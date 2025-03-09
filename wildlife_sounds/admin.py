@@ -1,12 +1,14 @@
 from django.contrib import admin
 from .models import Specie, SpecieSound, Order, Genus, Family, Taxon, User, List, SpecieForList, Score, UnknownSpecie
+from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
 
+class UserAdmin(DefaultUserAdmin):
+    model = User
+    list_display = ['username', 'is_superuser']
+    fieldsets = DefaultUserAdmin.fieldsets
+    add_fieldsets = DefaultUserAdmin.add_fieldsets 
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ("username", "email", "is_superuser")
-
-
+admin.site.register(User, UserAdmin)
 @admin.register(Specie)
 class SpecieAdmin(admin.ModelAdmin):
     list_display = ("vernacular_name", "scientific_name", "order", "family", "genus", "taxon", "description")
