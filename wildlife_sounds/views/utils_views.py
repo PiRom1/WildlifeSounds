@@ -8,15 +8,20 @@ from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseRedire
 import json
 import os
 import random as rd
+from django.contrib.staticfiles import finders
 
 @login_required
 def home(request):
 
-    path = 'wildlife_sounds/static/wildlife_sounds/birds_svg/'
+    path = finders.find('wildlife_sounds/birds_svg')
+
+    print("path : ", path)
+
     birds_svg = os.listdir(path)
-    path_birds_svg = [os.path.join(path, bird) for bird in birds_svg]
+    print(birds_svg)
+    path_birds_svg = ["static/wildlife_sounds/birds_svg/" + bird for bird in birds_svg]
     rd.shuffle(path_birds_svg)
-    path_birds_svg = ['/'.join(bird.split('/')[1:]) for bird in path_birds_svg]
+    
     print(path_birds_svg)
 
     url = "wildlife_sounds/utils/home.html"
