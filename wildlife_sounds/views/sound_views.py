@@ -204,6 +204,7 @@ def train_list(request, pk=None):
             
             list_sounds = [specie_sound.sound.url for specie_sound in specie_sounds]
             sounds.append({'specie' : specie.specie.vernacular_name,
+                           'scientific_specie' : specie.specie.scientific_name,
                            'sounds' : json.dumps(list_sounds)})
 
 
