@@ -143,15 +143,19 @@ def load_data_from_xeno_canto():
                         continue
 
                     # Add sound to database
-                    sound = requests.get(record.get('file'))
+                    try:
+                        sound = requests.get(record.get('file'))
 
-                    SpecieSound.objects.create(id = record.get('id'),
-                                               sound = ContentFile(sound.content, name=name),
-                                               specie = specie,
-                                               type = 'song',
-                                               country = 'France')
-                    
-                    print("Son ajouté !")
+                        SpecieSound.objects.create(id = record.get('id'),
+                                                sound = ContentFile(sound.content, name=name),
+                                                specie = specie,
+                                                type = 'song',
+                                                country = 'France')
+                        
+                        print("Son ajouté !")
+                    except:
+                        print("Erreur lors du chargement du son.")
+
 
 
 
