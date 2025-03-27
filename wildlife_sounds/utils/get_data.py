@@ -136,7 +136,11 @@ def load_data_from_xeno_canto():
                     specie = Specie.objects.get(scientific_name = name)
                 
 
-                if not SpecieSound.objects.filter(id__icontains=record.get('id')):
+                if not SpecieSound.objects.filter(id=record.get('id')):
+
+                    if SpecieSound.objects.filter(specie=specie) >= 10:
+                        print(f"Vous avez déjà 10 enregistrements pour l'espèce {specie}")
+                        continue
 
                     # Add sound to database
                     sound = requests.get(record.get('file'))
