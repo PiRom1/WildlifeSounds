@@ -17,7 +17,7 @@ pip install -r requirements.txt
 ```bash
 python manage.py createsuperuser
 ```
-puis initialisez la base de données : 
+Puis initialisez la base de données : 
 ```bash 
 python manage.py migrate
 ```
@@ -26,3 +26,19 @@ python manage.py migrate
 ```bash
 python manage.py runserver
 ```
+
+_______________________________________
+_______________________________________
+
+
+- Pour enregistrer toutes les espèces en base de données, lancez la commande suivante
+```bash
+python manage.py runscript load_all_species
+```
+(à ce stade, vous n'aurez encore aucun son, les espèces seront seulement sauvegardées en base de données)
+
+
+
+Prochain stade : 
+Soit tout télécharger de xenocanto (avec limite à n sons par espèce) soit télécharger quand des espèces sont dans une liste.
++ chaque jour récupérer les sons de la veille et ajouter si les espèces sont dans la liste en supprimant n sons à la place. 
