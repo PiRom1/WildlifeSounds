@@ -138,7 +138,7 @@ def load_data_from_xeno_canto():
 
                 if not SpecieSound.objects.filter(id=record.get('id')):
 
-                    if SpecieSound.objects.filter(specie=specie) >= 10:
+                    if len(SpecieSound.objects.filter(specie=specie)) >= 10:
                         print(f"Vous avez déjà 10 enregistrements pour l'espèce {specie}")
                         continue
 
