@@ -24,6 +24,7 @@ urlpatterns = [
                path("list/remove_specie_from_list", sound_views.remove_specie_from_list, name = "remove_specie_from_list"),
 
                path("create_list", sound_views.create_list, name = "create_list"),
+               path("delete_list", sound_views.delete_list, name = "delete_list"),
                path("train", sound_views.train, name="train"),
                path("test", sound_views.test, name="test"),
 

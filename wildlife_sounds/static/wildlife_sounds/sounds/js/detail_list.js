@@ -17,8 +17,36 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
             })
 
-
     }
+
+    let overlay;
+    function assombrirPage(saufElement) {
+        // Créer un overlay sombre couvrant toute la page
+        overlay = document.createElement("div");
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100vw";
+        overlay.style.height = "100vh";
+        overlay.style.backgroundColor = "rgba(0, 0, 0, 0.7)"; // Assombrissement
+        overlay.style.zIndex = "1000";  
+    
+        // Placer l'élément au-dessus de l'overlay
+        saufElement.style.position = "relative";
+        saufElement.style.zIndex = "1001";
+    
+        // Ajouter l'overlay au body
+        document.body.appendChild(overlay);
+    
+        // Supprimer l'overlay au clic dessus (optionnel)
+        overlay.addEventListener("click", () => {
+            overlay.remove();
+            saufElement.style.zIndex = "";
+            saufElement.style.display = 'none';
+        });
+    }
+    
+    
 
 
 
@@ -153,6 +181,49 @@ document.addEventListener('DOMContentLoaded', async function () {
             remove_bird_from_list(remove.getAttribute('specie-id'));
             remove.closest('tr').remove();
         })
+    })
+
+
+    // Delete list
+    const delete_list = document.getElementById('delete');
+    const delete_panel = document.getElementById('delete-panel');
+
+    const yes_delete = document.getElementById('yes-delete');
+    const no_delete = document.getElementById('no-delete');
+
+    delete_list.addEventListener('click', function() {
+
+        delete_panel.style.display = 'block';
+
+        assombrirPage(delete_panel);
+    })
+
+    yes_delete.addEventListener('click', function() {
+        
+        fetch('/delete_list', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest', // Ajoute cet en-tête pour indiquer qu'il s'agit d'une requête AJAX
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({pk_list})
+        }).then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log(data);
+                window.location.href = "/lists";
+            }
+        })
+
+    })
+
+
+    no_delete.addEventListener('click', function() {
+        overlay.remove();
+        delete_panel.style.zIndex = "";
+        delete_panel.style.display = 'none';
+
     })
 
 

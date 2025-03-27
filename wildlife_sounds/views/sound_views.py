@@ -261,8 +261,7 @@ def create_list(request):
         form = list_form.save(commit=False)
         form.user = request.user
         form.save()
-        print('redirection')
-        return HttpResponseRedirect('/lists')
+        return HttpResponseRedirect(f'/lists/{form.id}')
 
 
     url = "wildlife_sounds/sounds/create_list.html"
@@ -296,3 +295,25 @@ def test(request):
 
     return render(request, url, context)
 
+
+
+
+@login_required
+def delete_list(request):
+
+    if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+        return HttpResponseBadRequest('<h1>400 Bad Request</h1><p>Requête non autorisée.</p>')
+    
+    data = json.loads(request.body)    
+    
+    
+    pk = data.get('pk_list')
+
+    if not pk:
+        return JsonResponse({'success' : False, 'error' : "L'id de la liste n'est pas fourni."})
+
+    delete_list = List.objects.get(pk = pk)
+    name_list = delete_list.name
+    delete_list.delete()
+
+    return JsonResponse({'success' : True, 'name_list' : name_list})
