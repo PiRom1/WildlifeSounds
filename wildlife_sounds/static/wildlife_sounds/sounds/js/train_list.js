@@ -14,8 +14,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         audio = new Audio(sound);
-        audio.play();
+        audio.play().catch(error => {
+            console.log(`Erreur : ${error}`);
+        });
     };
+
     
 
     const terminer = document.getElementById('terminer');
@@ -33,6 +36,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.log(specie_name);
     let sound;
     
+    sound = specie_sounds[Math.floor(Math.random() * specie_sounds.length)]
+    play_sound(sound);
+
+
     speaker.addEventListener('click', function() {
         sound = specie_sounds[Math.floor(Math.random() * specie_sounds.length)]
         play_sound(sound);
@@ -55,14 +62,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         audio.currentTime = 0;
 
         console.log(specie_name);
-
+    
+        sound = specie_sounds[Math.floor(Math.random() * specie_sounds.length)]
+        play_sound(sound);
+        
         
         if ((id+1).toString() === nb_species) {
             console.log('finito');
             next.style.display = 'none';
             terminer.style.display = 'block';
         }
-
+       
         
     })
 
@@ -82,11 +92,5 @@ document.addEventListener('DOMContentLoaded', async function () {
     })
 
 
-
-    // sounds.forEach(sound => {
-    //     let specie_name = sound.getAttribute('specie');
-    //     let specie_sounds = JSON.parse(sound.getAttribute('sounds'));
-    //     console.log(specie_name, specie_sounds);
-    // })
 
 })
