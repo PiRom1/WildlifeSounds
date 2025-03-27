@@ -215,7 +215,7 @@ def load_all_species_from_xeno_canto():
                     genus, created = Genus.objects.get_or_create(genus_name = 'Unknown')
 
 
-                taxon = Taxon.objects.get_or_create(taxon_name = 'Oiseau')
+                taxon, created = Taxon.objects.get_or_create(taxon_name = 'Oiseau')
 
                 vernacular_name = specie_data.get('vernacular_name')
 
