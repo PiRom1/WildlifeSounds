@@ -1,7 +1,30 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
+    function remove_bird_from_list(bird_id) {
+        
+        fetch('/list/remove_specie_from_list', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest', // Ajoute cet en-tête pour indiquer qu'il s'agit d'une requête AJAX
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({bird_id, pk_list})
+        }).then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log(data);
+            }
+            })
+
+
+    }
+
+
+
     const csrftoken = document.querySelector('[name="csrf-token"]').content;
 
+    let specie_id;
     const data = document.getElementById('data');
     let available_species = JSON.parse(data.getAttribute('available-species'));
     const pk_list = data.getAttribute('pk-list');
@@ -58,8 +81,41 @@ document.addEventListener('DOMContentLoaded', async function () {
                     }).then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            console.log(data.available_names)
+                            console.log(data);
                             available_species = JSON.parse(data.available_names);
+                            specie_id = data.specie_id;
+                            
+                            // Ajouter l'élément à la liste
+                            const newRow = document.createElement('tr');
+                            const newCell = document.createElement('th');
+                            newCell.setAttribute('scope', 'row');
+                            newCell.textContent = specie;  // Texte de la nouvelle ligne, tu peux l'adapter
+
+                            // Créer l'icône de suppression
+                            const removeIcon = document.createElement('span');
+                            removeIcon.classList.add('remove');
+                            removeIcon.innerHTML = '❌'; // Icône de suppression
+                            removeIcon.setAttribute('specie-id', specie_id); // Ajouter l'ID de l'espèce si nécessaire
+                            removeIcon.style.marginLeft = 'auto'; // Assurer que la croix est bien positionnée à droite
+                            removeIcon.style.cursor = 'pointer'; // Ajouter un curseur pour l'effet interactif
+
+                            removeIcon.addEventListener('click', function() {
+                                remove_bird_from_list(specie_id);
+                                newCell.remove();
+                            })
+
+                            newCell.appendChild(removeIcon);
+
+                    
+                            // Ajouter la cellule à la ligne
+                            newRow.appendChild(newCell);
+                    
+                            // Ajouter la nouvelle ligne au <tbody>
+                            tbody.appendChild(newRow);
+                            new_specie.value = '';
+                            available_species_div.innerHTML = '';
+
+
                             new_specie.focus()
                         }
                         else {
@@ -69,20 +125,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                 
                 
 
-
-                    // Ajouter l'élément à la liste
-                    const newRow = document.createElement('tr');
-                    const newCell = document.createElement('th');
-                    newCell.setAttribute('scope', 'row');
-                    newCell.textContent = specie;  // Texte de la nouvelle ligne, tu peux l'adapter
-            
-                    // Ajouter la cellule à la ligne
-                    newRow.appendChild(newCell);
-            
-                    // Ajouter la nouvelle ligne au <tbody>
-                    tbody.appendChild(newRow);
-                    new_specie.value = '';
-                    available_species_div.innerHTML = '';
                 })
 
                 return element;
@@ -100,6 +142,17 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     plus.addEventListener('click', function() {
         new_specie.style.display = 'block';
+    })
+
+
+    // Remove specie
+    const removes = document.querySelectorAll('.remove');
+
+    removes.forEach(remove => {
+        remove.addEventListener('click', function() {
+            remove_bird_from_list(remove.getAttribute('specie-id'));
+            remove.closest('tr').remove();
+        })
     })
 
 

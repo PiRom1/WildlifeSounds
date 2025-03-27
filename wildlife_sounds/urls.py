@@ -20,7 +20,9 @@ urlpatterns = [
                path("lists/<int:pk>", sound_views.detail_list, name = "user_lists"),
                path("lists/<int:pk>/train", sound_views.train_list, name = "train_list"),
                path("lists/<int:pk>/test", sound_views.test_list, name = "test_list"),
-               path("list/add_specie_to_list", sound_views.add_sound_to_list, name = "add_sound_to_list"),
+               path("list/add_specie_to_list", sound_views.add_specie_to_list, name = "add_specie_to_list"),
+               path("list/remove_specie_from_list", sound_views.remove_specie_from_list, name = "remove_specie_from_list"),
+
                path("create_list", sound_views.create_list, name = "create_list"),
                path("train", sound_views.train, name="train"),
                path("test", sound_views.test, name="test"),

@@ -78,3 +78,16 @@ tr:nth-child(odd) {
     background-color: rgb(215, 191, 158); /* Assombrit le bouton au survol */
 }
 
+
+.remove {
+    margin-left: auto;    
+    font-size: 15px;
+    cursor: pointer;
+}
+
+th[scope="row"] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 3px; */
+}

@@ -120,7 +120,7 @@ def detail_list(request, pk = None):
 
 
 @login_required
-def add_sound_to_list(request):
+def add_specie_to_list(request):
 
     if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
         return HttpResponseBadRequest('<h1>400 Bad Request</h1><p>Requête non autorisée.</p>')
@@ -150,14 +150,42 @@ def add_sound_to_list(request):
     available_names = get_available_species_name(liste)
 
     print("chargement des sons ... ")
-    load_data_specific_bird_xenocanto(specie.scientific_name)
+    # load_data_specific_bird_xenocanto(specie.scientific_name)
     
-
-
     return JsonResponse({'success' : True,
                          'message': 'Succes',
-                         'available_names' : json.dumps(available_names)},
+                         'available_names' : json.dumps(available_names),
+                         'specie_id' : specie.id},
                          status=200)
+
+
+
+@login_required
+def remove_specie_from_list(request):
+
+    if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+        return HttpResponseBadRequest('<h1>400 Bad Request</h1><p>Requête non autorisée.</p>')
+    
+    data = json.loads(request.body)    
+    print("data : ", data)
+
+    id_list = data.get('pk_list')
+    id_bird = data.get('bird_id')
+
+    if not id_list:
+        return JsonResponse({'success' : False, 'error' : 'ID list is not in data'})
+
+    if not id_bird:
+        return JsonResponse({'success' : False, 'error' : 'ID bird is not in data'})
+    
+    liste = List.objects.get(pk=id_list)
+    specie = Specie.objects.get(pk=id_bird)
+
+    SpecieForList.objects.filter(list_id = id_list, specie_id = id_bird).delete()
+
+
+    return JsonResponse({'success' : True})
+    
 
 
 @login_required

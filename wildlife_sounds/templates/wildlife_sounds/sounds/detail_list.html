@@ -43,7 +43,10 @@
             <tbody>
                 {% for specie in list_species %}
                     <tr>
-                        <th scope="row">{{specie.vernacular_name}}</th>
+                        <th scope="row">
+                            {{specie.vernacular_name}}
+                            <span class="remove" specie-id="{{specie.id}}">❌</span>
+                        </th>
                     </tr>
                 {% endfor %}
             </tbody>
