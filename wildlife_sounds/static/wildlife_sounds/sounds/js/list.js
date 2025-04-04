@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         clearTimeout(debounceTimeout); // Annuler l'exécution précédente si un nouvel input arrive
         debounceTimeout = setTimeout(() => {
             if (search.value === '') {
+                table.innerHTML = '';
                 included_species = [];
                 sounds0.forEach(sound => {
                     if (sound) {
