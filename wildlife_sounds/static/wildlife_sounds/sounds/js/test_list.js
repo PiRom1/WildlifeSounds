@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         audio = new Audio(sound);
-        audio.play();
+        audio.play().catch(error => {
+            console.log(`Erreur : ${error}`);
+        });
     };
 
 
@@ -73,13 +75,16 @@ document.addEventListener('DOMContentLoaded', async function () {
             scientific_name: scientific_name
         };
     }
-    
+    let sound;
+
     let specieData = get_specie_data(id);
     
     console.log(specieData);
     
+    sound = specieData.specie_sounds[Math.floor(Math.random() * specieData.specie_sounds.length)]
+    play_sound(sound);
+    
 
-    let sound;
     
     speaker.addEventListener('click', function() {
         sound = specieData.specie_sounds[Math.floor(Math.random() * specieData.specie_sounds.length)]
@@ -127,6 +132,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
             console.log(specieData);
+            sound = specieData.specie_sounds[Math.floor(Math.random() * specieData.specie_sounds.length)]
+            play_sound(sound);
         }
 
         if (id + 1 === parseInt(nb_species) + 1) {

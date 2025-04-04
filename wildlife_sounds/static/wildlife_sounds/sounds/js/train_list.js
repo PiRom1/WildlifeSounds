@@ -14,8 +14,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         audio = new Audio(sound);
-        audio.play();
+        audio.play().catch(error => {
+            console.log(`Erreur : ${error}`);
+        });
     };
+
     
 
     const terminer = document.getElementById('terminer');
@@ -28,9 +31,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     let specie_sounds = JSON.parse(all_sounds[id].getAttribute('sounds'));
     let specie_name = all_sounds[id].getAttribute('specie');
+    let scientific_specie_name = all_sounds[id].getAttribute('scientific_specie');
+
     console.log(specie_name);
     let sound;
     
+    sound = specie_sounds[Math.floor(Math.random() * specie_sounds.length)]
+    play_sound(sound);
+
+
     speaker.addEventListener('click', function() {
         sound = specie_sounds[Math.floor(Math.random() * specie_sounds.length)]
         play_sound(sound);
@@ -47,19 +56,23 @@ document.addEventListener('DOMContentLoaded', async function () {
         bird_name.style.display = 'none';
     
         specie_name = all_sounds[id].getAttribute('specie');
+        scientific_specie_name = all_sounds[id].getAttribute('scientific_specie');
         specie_sounds = JSON.parse(all_sounds[id].getAttribute('sounds'));
         audio.pause();
         audio.currentTime = 0;
 
         console.log(specie_name);
-
+    
+        sound = specie_sounds[Math.floor(Math.random() * specie_sounds.length)]
+        play_sound(sound);
+        
         
         if ((id+1).toString() === nb_species) {
             console.log('finito');
             next.style.display = 'none';
             terminer.style.display = 'block';
         }
-
+       
         
     })
 
@@ -75,15 +88,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     mystery_bird.addEventListener('click', function() {
         mystery_bird.style.display = 'none';
         bird_name.style.display = 'block';
-        bird_name.innerHTML = specie_name;
+        bird_name.innerHTML = `${specie_name} (<i>${scientific_specie_name}</i>)`;
     })
 
 
-
-    // sounds.forEach(sound => {
-    //     let specie_name = sound.getAttribute('specie');
-    //     let specie_sounds = JSON.parse(sound.getAttribute('sounds'));
-    //     console.log(specie_name, specie_sounds);
-    // })
 
 })

@@ -186,7 +186,7 @@ def detail_list(request, pk = None):
 
 
 @login_required
-def add_sound_to_list(request):
+def add_specie_to_list(request):
 
     if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
         return HttpResponseBadRequest('<h1>400 Bad Request</h1><p>Requête non autorisée.</p>')
@@ -216,14 +216,42 @@ def add_sound_to_list(request):
     available_names = get_available_species_name(liste)
 
     print("chargement des sons ... ")
-    load_data_specific_bird_xenocanto(specie.scientific_name)
+    # load_data_specific_bird_xenocanto(specie.scientific_name)
     
-
-
     return JsonResponse({'success' : True,
                          'message': 'Succes',
-                         'available_names' : json.dumps(available_names)},
+                         'available_names' : json.dumps(available_names),
+                         'specie_id' : specie.id},
                          status=200)
+
+
+
+@login_required
+def remove_specie_from_list(request):
+
+    if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+        return HttpResponseBadRequest('<h1>400 Bad Request</h1><p>Requête non autorisée.</p>')
+    
+    data = json.loads(request.body)    
+    print("data : ", data)
+
+    id_list = data.get('pk_list')
+    id_bird = data.get('bird_id')
+
+    if not id_list:
+        return JsonResponse({'success' : False, 'error' : 'ID list is not in data'})
+
+    if not id_bird:
+        return JsonResponse({'success' : False, 'error' : 'ID bird is not in data'})
+    
+    liste = List.objects.get(pk=id_list)
+    specie = Specie.objects.get(pk=id_bird)
+
+    SpecieForList.objects.filter(list_id = id_list, specie_id = id_bird).delete()
+
+
+    return JsonResponse({'success' : True})
+    
 
 
 @login_required
@@ -242,6 +270,7 @@ def train_list(request, pk=None):
             
             list_sounds = [specie_sound.sound.url for specie_sound in specie_sounds]
             sounds.append({'specie' : specie.specie.vernacular_name,
+                           'scientific_specie' : specie.specie.scientific_name,
                            'sounds' : json.dumps(list_sounds)})
 
 
@@ -299,8 +328,7 @@ def create_list(request):
         form = list_form.save(commit=False)
         form.user = request.user
         form.save()
-        print('redirection')
-        return HttpResponseRedirect('/lists')
+        return HttpResponseRedirect(f'/lists/{form.id}')
 
 
     url = "wildlife_sounds/sounds/create_list.html"
@@ -334,3 +362,25 @@ def test(request):
 
     return render(request, url, context)
 
+
+
+
+@login_required
+def delete_list(request):
+
+    if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+        return HttpResponseBadRequest('<h1>400 Bad Request</h1><p>Requête non autorisée.</p>')
+    
+    data = json.loads(request.body)    
+    
+    
+    pk = data.get('pk_list')
+
+    if not pk:
+        return JsonResponse({'success' : False, 'error' : "L'id de la liste n'est pas fourni."})
+
+    delete_list = List.objects.get(pk = pk)
+    name_list = delete_list.name
+    delete_list.delete()
+
+    return JsonResponse({'success' : True, 'name_list' : name_list})

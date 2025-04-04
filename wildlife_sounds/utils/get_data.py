@@ -136,18 +136,26 @@ def load_data_from_xeno_canto():
                     specie = Specie.objects.get(scientific_name = name)
                 
 
-                if not SpecieSound.objects.filter(id__icontains=record.get('id')):
+                if not SpecieSound.objects.filter(id=record.get('id')):
+
+                    if len(SpecieSound.objects.filter(specie=specie)) >= 10:
+                        print(f"Vous avez déjà 10 enregistrements pour l'espèce {specie}")
+                        continue
 
                     # Add sound to database
-                    sound = requests.get(record.get('file'))
+                    try:
+                        sound = requests.get(record.get('file'))
 
-                    SpecieSound.objects.create(id = record.get('id'),
-                                               sound = ContentFile(sound.content, name=name),
-                                               specie = specie,
-                                               type = 'song',
-                                               country = 'France')
-                    
-                    print("Son ajouté !")
+                        SpecieSound.objects.create(id = record.get('id'),
+                                                sound = ContentFile(sound.content, name=name),
+                                                specie = specie,
+                                                type = 'song',
+                                                country = 'France')
+                        
+                        print("Son ajouté !")
+                    except:
+                        print("Erreur lors du chargement du son.")
+
 
 
 
@@ -215,7 +223,7 @@ def load_all_species_from_xeno_canto():
                     genus, created = Genus.objects.get_or_create(genus_name = 'Unknown')
 
 
-                taxon = Taxon.objects.get(taxon_name = 'Oiseau')
+                taxon, created = Taxon.objects.get_or_create(taxon_name = 'Oiseau')
 
                 vernacular_name = specie_data.get('vernacular_name')
 
