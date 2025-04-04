@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const search = document.getElementById('text_search');
     const cross = document.getElementById('cross');
+    let audio = null;
 
 
     // Sound
     function launch_speakers() {
         const speakers = document.querySelectorAll('.speaker');
-        let audio = null;
 
         speakers.forEach(speaker => {
             let speaker_url = speaker.getAttribute('sound')
