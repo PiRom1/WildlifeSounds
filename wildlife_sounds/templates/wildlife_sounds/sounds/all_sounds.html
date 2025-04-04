@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des sons</title>
@@ -15,13 +17,21 @@
 </head>
 
 <body>
+
+    <div id='data' all-species="{{all_species}}" sounds0="{{sounds0}}" div>
+
+
+
     <h1>Liste des sons</h1>
     <a href="/" class="home">
         Accueil
     </a>
 
     <div class='text-search'>
-        <input type='text' id='text_search' placeholder="Recherche ..."/>
+        <input type='text' id='text_search' placeholder="Recherche ..."/> <span id="cross" class="cross">&#10006;</span>
+        <ul id="query-species" class="query-species">
+
+        </ul>
     </div>
 
     <div class="list-sounds">
@@ -41,31 +51,8 @@
                 <th scope="col">Pays</th>
               </tr>
             </thead>
-            <tbody>
-                {% for sound in sounds %}
+            <tbody id="body-table">
                 
-                    <tr 
-                    class='table-row' 
-                    vernacular_name="{{sound.specie.vernacular_name}}"
-                    scientific_name="{{sound.specie.scientific_name}}"
-                    order_name="{{sound.specie.order.order_name}}"
-                    family_name="{{sound.specie.family.family_name}}"
-                    genus_name="{{sound.specie.genus.genus_name}}"
-                    taxon_name="{{sound.specie.taxon.taxon_name}}"
-                    type_name="{{sound.type}}"
-                    country_name="{{sound.country}}"
-                    >
-                        <th scope="row">{{sound.specie.vernacular_name}}</th>
-                        <td class="speaker" sound={{sound.sound.url}}>&#128266</td>
-                        <td>{{sound.specie.scientific_name}}</td>
-                        <td>{{sound.specie.order.order_name}}</td>
-                        <td>{{sound.specie.family.family_name}}</td>
-                        <td>{{sound.specie.genus.genus_name}}</td>
-                        <td>{{sound.specie.taxon.taxon_name}}</td>
-                        <td>{{sound.type}}</td>
-                        <td>{{sound.country}}</td>
-                    </tr>
-                {% endfor %}
             </tbody>
 
         </table>

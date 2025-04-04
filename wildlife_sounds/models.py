@@ -127,10 +127,21 @@ class SpecieForList(models.Model):
     
 
 class Score(models.Model):
-    score = models.IntegerField('score')
+    score = models.IntegerField('score', default=0)
+    max_score = models.IntegerField('max_score', default=0)
+    nb_vernacular = models.IntegerField(default=0)
+    nb_scientific = models.IntegerField(default=0)
+    nb_error = models.IntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     list = models.ForeignKey(List, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def percent_score(self):
+        if self.max_score == 0:
+            return 0
+        
+        return self.score / self.max_score
 
     def __str__(self):
         return f"{self.score} ({self.date} / {self.user.username})"

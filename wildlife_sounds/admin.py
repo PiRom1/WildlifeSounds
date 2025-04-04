@@ -59,7 +59,7 @@ class SpecieForListAdmin(admin.ModelAdmin):
 
 @admin.register(Score)
 class ScoreAdmin(admin.ModelAdmin):
-    list_display = ("score", "user", "list", "date")
+    list_display = ("score", "max_score", "nb_vernacular", "nb_scientific", "nb_error", "user", "list", "date")
 
 
 @admin.register(UnknownSpecie)

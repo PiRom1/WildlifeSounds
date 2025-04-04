@@ -9,6 +9,7 @@ import json
 import os
 import random as rd
 from django.contrib.staticfiles import finders
+from django.contrib.auth import logout
 
 @login_required(login_url='login')
 def home(request):
@@ -51,3 +52,9 @@ def record_score(request):
         return JsonResponse({'success' : True})
 
     return JsonResponse({'success' : False})
+
+
+@login_required
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect("/login")

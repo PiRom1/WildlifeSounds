@@ -31,4 +31,32 @@ tr:nth-child(odd) {
 
 .text-search {
     padding-left: 20px;
+    width: 20%;
 }
+
+
+.query-species {
+    margin: 0;
+    list-style-type: none;
+    padding: 0;
+    width: 80%;
+}
+
+
+.cross {
+    color: rgb(255, 255, 240);
+    cursor: pointer;
+    transition: color 0.5s ease;
+}
+
+.cross:hover {
+    color: rgb(255, 255, 200);
+    font-weight: bold;
+}
+
+.cross:active {
+    color: rgb(240, 240, 240);
+    font-weight: bold;
+
+}
+

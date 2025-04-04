@@ -50,3 +50,11 @@ p {
 .home:active {
     background-color: #b1907f76;
 }
+
+
+.logout {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    font-size: 18px;
+}

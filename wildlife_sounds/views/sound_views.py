@@ -14,6 +14,39 @@ from wildlife_sounds.utils.get_data import load_data_specific_bird_xenocanto
 
 # Utils
 
+def get_specie_data_and_sounds(specie, unique=False):
+    '''
+    Returns a list of dict of data for a specie. 
+
+    specie : Specie object
+    unique : bool, if you want only one sound or not
+    '''
+
+    sounds = SpecieSound.objects.filter(specie = specie).order_by('?')
+
+    data = []
+
+    for sound in sounds:
+        d = {"vernacular_name": specie.vernacular_name,
+             "scientific_name": specie.scientific_name,
+             "order_name": specie.order.order_name,
+             "family_name": specie.family.family_name,
+             "genus_name" : specie.genus.genus_name,
+             "taxon_name" : specie.taxon.taxon_name,
+             "type_name" : "song",
+             "country_name" : "France",
+             "sound_url" : sound.sound.url}
+        
+        if unique:
+            return d
+        
+        data.append(d)
+    
+    return data
+
+
+
+
 def get_available_species_name(liste): # Renvoie le nom des espèces non présentes dans la liste
     list_species = SpecieForList.objects.filter(list = liste)
     available_species = Specie.objects.exclude(vernacular_name__in=[specie.specie.vernacular_name for specie in list_species])
@@ -28,10 +61,43 @@ def all_sounds(request):
 
     url = "wildlife_sounds/sounds/all_sounds.html"
 
-    sounds = SpecieSound.objects.all()[0:50]
+    all_species = Specie.objects.all().order_by('vernacular_name')
 
-    context = {"sounds" : sounds}
+    unique_birds_data = [get_specie_data_and_sounds(specie, unique=True) for specie in all_species]
+    unique_birds_data = [data for data in unique_birds_data if data]
+    print(unique_birds_data)
+
+    all_species_names = list(all_species.values_list('vernacular_name', flat=True)) + list(all_species.values_list('scientific_name', flat=True))
+
+    context = {"sounds0" : json.dumps(unique_birds_data),
+               "all_species" : json.dumps(all_species_names)}
+    
     return render(request, url, context)
+
+
+@login_required
+def all_sounds_fetch_specie(request):
+
+    if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+        return HttpResponseBadRequest('<h1>400 Bad Request</h1><p>Requête non autorisée.</p>')
+    
+    data = json.loads(request.body)    
+    print("data : ", data)
+    specie = Specie.objects.filter(vernacular_name=data.get("specie"))
+
+    if not specie:
+        specie = Specie.objects.filter(scientific_name=data.get("specie"))
+    
+    if not specie:
+        return JsonResponse({'success' : False, 'error' : "L'espèce indiquée n'a pas été trouvée."})
+    
+    specie = specie.first()
+
+    data = get_specie_data_and_sounds(specie = specie)
+
+
+    return JsonResponse({'success' : True, 'data' : data})
+
 
 
 @login_required

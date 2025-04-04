@@ -10,9 +10,11 @@ urlpatterns = [
             # UTILS
                path("", utils_views.home, name="home"),
                path("record_score", utils_views.record_score, name="record_score"),
+               path("logout", utils_views.logout_user, name="logout"),
             
             # SOUNDS
                path("all", sound_views.all_sounds, name="list"),
+               path("all/fetch_specie", sound_views.all_sounds_fetch_specie, name="all_fetch_specie"),
                path("add_sound", sound_views.add_sound, name="add_sound"),
                path("add_sound_fetch", sound_views.add_sound_fetch, name="add_sound_fetch"),
 

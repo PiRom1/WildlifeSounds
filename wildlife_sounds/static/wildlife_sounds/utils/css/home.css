@@ -42,6 +42,11 @@
 .rubrique:hover {
     color: rgba(244, 244, 225, 0.819);
     background-color: rgba(250, 235, 215, 0.3);
+}
+
+.rubrique:active {
+    color: rgba(244, 244, 225, 0.819);
+    background-color: rgba(250, 235, 215, 0.25);
 
 }
 
