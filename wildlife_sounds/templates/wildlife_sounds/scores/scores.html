@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter des sons</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+
+    <link rel="icon" type="image/x-icon" href="/media/86_icon.svg">
+    {% load static %}
+
+    <script src="{% static 'wildlife_sounds/scores/js/scores.js' %}" type="module"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/scores/css/scores.css' %}">
+
+</head>
+
+<body>
+
+    <div id="data" listes="{{listes}}" score_values="{{score_values}}" score_dates="{{score_dates}}"></div>
+
+
+    <h1> Scores </h1>
+    
+    <div class="input-container">
+        <div class="list-selector">
+            <select id="lists-input">
+                <option value="">Choisissez une liste...</option>
+            </select>
+        </div>
+
+        <div class="pourcentage-checkbox">
+            Scores en pourcentage ? <br>
+            <input type="checkbox" id="pourcentage-input" name="Pourcentages" checked>
+        
+        </div>
+        
+    </div>
+
+    <div id="plotly-chart" class="plot"></div>
+
+
+</body>

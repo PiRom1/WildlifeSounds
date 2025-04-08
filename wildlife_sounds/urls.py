@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import sound_views, login_views, load_data_views, utils_views
+from .views import sound_views, login_views, load_data_views, utils_views, score_views
 
 urlpatterns = [
             # LOGIN
@@ -33,6 +33,10 @@ urlpatterns = [
             # LOAD DATA
                path('load_data', load_data_views.load_data, name = 'load_data'),
                path('load_data_xeno_canto', load_data_views.load_data_xeno_canto, name = 'load_data_xenocanto'),
-               path('load_data/<str:name>', load_data_views.load_bird, name = 'load_bird')
+               path('load_data/<str:name>', load_data_views.load_bird, name = 'load_bird'),
+
+            # SCORES
+               path("scores", score_views.scores, name="scores"),
+               path("fetch_get_scores", score_views.fetch_get_scores, name="fetch_get_scores"),
 
                ]

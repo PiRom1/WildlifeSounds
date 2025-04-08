@@ -1,0 +1,34 @@
+.input-container {
+    background-color: rgba(242, 225, 202, 0.6);
+    width: 80%;
+    margin-left: 10%;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+}
+
+
+.plot {
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 30px;
+    height: 80%;
+}
+
+
+.list-selector {
+    display: flex;
+    align-items: center;
+}
+
+
+.pourcentage-checkbox {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 16px;
+    color: ivory;
+}
