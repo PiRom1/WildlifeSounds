@@ -42,7 +42,7 @@ def record_score(request):
     data = json.loads(request.body)
     print("data : ", data)
     score = data.get('score')
-    nb_species = data.get('nb_species')
+    nb_species = int(data.get('nb_species'))
     nb_vernacular = data.get('nb_vernacular')
     nb_scientific = data.get('nb_scientific')
     nb_error = data.get('nb_error')
