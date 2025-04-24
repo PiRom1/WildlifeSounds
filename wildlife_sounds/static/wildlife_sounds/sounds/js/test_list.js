@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
     terminer.addEventListener('click', function() {
-        
+        console.log('nb_speciues : ', nb_species);
         fetch('/record_score', {
             method: 'POST',
             headers: {
