@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <div id='data' available-species="{{available_species}}" pk-list="{{pk}}"></div>
+    <div id='data' available-species="{{available_species}}" pk-list="{{pk}}" nb-species="{{nb_species}}"></div>
 
     <a href="/" class="home">
         Accueil
@@ -29,7 +29,13 @@
 
     <div class="button-container">
         <a href="/lists/{{pk}}/train">S'entraîner</a>    
-        <a href="/lists/{{pk}}/test">Lancer un blindtest !</a>
+        <a id="test-button" style="cursor:pointer;">Lancer un blindtest !</a>
+    </div>
+
+    <div class="test-container" id="test-container">
+        <p><strong>Sur combien d'espèces voulez-vous lancer le test ?</strong></p>
+        <input id="nb-species-test" type="number" min="1" max="{{nb_species}}" value="{{nb_species}}" style="width: 10%;"> <p style="display: inline;">/ <span id="counter">{{nb_species}}</span></p>
+        <div class="launch-test-button" id="launch-test-button">Lancer le blindtest !</div>
     </div>
     
     <div class="table-container">

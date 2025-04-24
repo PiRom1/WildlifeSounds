@@ -130,6 +130,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             removeIcon.addEventListener('click', function() {
                                 remove_bird_from_list(specie_id);
                                 newCell.remove();
+                                max_species -= 1;
                             })
 
                             newCell.appendChild(removeIcon);
@@ -142,8 +143,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                             tbody.appendChild(newRow);
                             new_specie.value = '';
                             available_species_div.innerHTML = '';
-
-
+                            
+                            max_species += 1;
                             new_specie.focus()
                         }
                         else {
@@ -180,6 +181,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         remove.addEventListener('click', function() {
             remove_bird_from_list(remove.getAttribute('specie-id'));
             remove.closest('tr').remove();
+            max_species -= 1;
         })
     })
 
@@ -226,5 +228,36 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     })
 
+
+
+
+
+    // Test button
+    const test_button = document.getElementById('test-button');
+    const test_container = document.getElementById('test-container');
+    const input_nb_species = document.getElementById('nb-species-test');
+    const counter = document.getElementById('counter');
+    let max_species = parseInt(data.getAttribute('nb-species'));
+    let nb_species = data.getAttribute('nb-species');
+
+    test_button.addEventListener('click', function() {
+        // Demander sur combien d'espèces lancer le blindtest
+        counter.innerHTML = max_species;
+        input_nb_species.value = max_species;
+        input_nb_species.max = max_species;
+        test_container.style.display = 'block';
+        assombrirPage(test_container);
+    })
+
+    input_nb_species.addEventListener('change', function() {
+        nb_species = input_nb_species.value;
+        console.log(`nb species : ${nb_species}`);
+    })
+
+    const launch_test_button = document.getElementById('launch-test-button');
+
+    launch_test_button.addEventListener('click', function() {
+        window.location.href = `/lists/${pk_list}/test?nb_species=${input_nb_species.value}`;
+    })
 
 });

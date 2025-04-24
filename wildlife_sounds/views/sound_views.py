@@ -7,7 +7,7 @@ import json
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
 import json
 from wildlife_sounds.utils.get_data import load_data_specific_bird_xenocanto
-
+import random as rd
 
 # Create your views here.
 
@@ -180,6 +180,7 @@ def detail_list(request, pk = None):
     context = {'pk' : pk,
                'liste' : liste,
                'list_species' : list_species,
+               'nb_species' : len(list_species),
                'available_species' : json.dumps(available_names)}
 
     return render(request, url, context)
@@ -288,11 +289,19 @@ def train_list(request, pk=None):
 @login_required
 def test_list(request, pk=None):
 
+    nb_species = request.GET.get('nb_species', None)
+    print("nb_species : ", nb_species, request.GET)
+
     liste = List.objects.get(id=pk)
 
     sounds = []
 
     species = SpecieForList.objects.filter(list=liste).order_by('?')
+
+    if not nb_species:   # Si pas de nb_species spécifié
+        nb_species = len(species)  # Alors prendre le nombre max
+    else:
+        nb_species = int(nb_species)
 
     for specie in species:
         specie_sounds = SpecieSound.objects.filter(specie = specie.specie)
@@ -304,7 +313,11 @@ def test_list(request, pk=None):
                            'scientific_specie' : specie.specie.scientific_name,
                            'sounds' : json.dumps(list_sounds)})
         print([sound['vernacular_specie'] for sound in sounds])
-
+    
+    print(sounds, len(sounds))
+    sounds = rd.sample(sounds, len(sounds))
+    print("nb_species : " , nb_species, type(nb_species))
+    sounds = sounds[:nb_species]
 
     url = "wildlife_sounds/sounds/test_list.html"
 
