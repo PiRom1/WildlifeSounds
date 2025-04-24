@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const data = document.getElementById('data');
     const nb_species = data.getAttribute('nb_species');
     const pk = data.getAttribute('pk');
+    console.log("nb_species : ", nb_species);
     
 
     // Audio
@@ -159,7 +160,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
     terminer.addEventListener('click', function() {
-
         
         fetch('/record_score', {
             method: 'POST',
