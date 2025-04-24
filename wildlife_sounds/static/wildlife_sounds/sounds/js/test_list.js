@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     let html_score = document.getElementById('score');
     let score = 0;
+    let nb_vernacular = 0;
+    let nb_scientific = 0;
+    let nb_error = 0;
     const terminer = document.getElementById('terminer');
     const next = document.getElementById('next');
     const speaker = document.getElementById('speaker');
@@ -101,17 +104,20 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (text_input.value.toLowerCase() === specieData.vernacular_name.toLowerCase()) {
             score += 1;
+            nb_vernacular += 1;
             console.log('nom vernaculaire ok');
             show_result_popup(true, specieData.vernacular_name, specieData.scientific_name, 1);
 
         }
         else if (text_input.value.toLowerCase() === specieData.scientific_name.toLocaleLowerCase()) {
             score += 3;
+            nb_scientific += 1;
             console.log('nom scientifique ok !');
             show_result_popup(true, specieData.vernacular_name, specieData.scientific_name, 3);
         }
         else {
             console.log('NUL');
+            nb_error += 1;
             show_result_popup(false, specieData.vernacular_name, specieData.scientific_name, 0);
         }
 
@@ -162,7 +168,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken
             },
-            body: JSON.stringify({score, pk})
+            body: JSON.stringify({pk, score, nb_vernacular, nb_scientific, nb_error, nb_species})
         })
         .then(response => response.json())
         .then(data => {

@@ -39,14 +39,24 @@ def record_score(request):
     if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
         return HttpResponseBadRequest('<h1>400 Bad Request</h1><p>Requête non autorisée.</p>')
     
-    data = json.loads(request.body)    
+    data = json.loads(request.body)
+    print("data : ", data)
     score = data.get('score')
+    nb_species = data.get('nb_species')
+    nb_vernacular = data.get('nb_vernacular')
+    nb_scientific = data.get('nb_scientific')
+    nb_error = data.get('nb_error')
     pk = data.get('pk')
+
     liste = List.objects.get(id=pk)
 
     new_score = Score.objects.create(score = score,
-                         user = request.user,
-                         list = liste)
+                                     max_score = nb_species * 3,
+                                     nb_vernacular = nb_vernacular,
+                                     nb_scientific = nb_scientific,
+                                     nb_error = nb_error,
+                                     user = request.user,
+                                     list = liste)
     
     if new_score:
         return JsonResponse({'success' : True})
