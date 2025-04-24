@@ -40,6 +40,7 @@ def record_score(request):
         return HttpResponseBadRequest('<h1>400 Bad Request</h1><p>Requête non autorisée.</p>')
     
     data = json.loads(request.body)
+    print("data : ", data)
     score = data.get('score')
     nb_species = int(data.get('nb_species'))
     nb_vernacular = data.get('nb_vernacular')
