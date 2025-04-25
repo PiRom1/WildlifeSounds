@@ -18,3 +18,55 @@ li {
 .create-list a:hover {
     background-color: rgb(215, 191, 158); /* Assombrit le bouton au survol */
 }
+
+
+
+.test-container {
+    position: absolute;
+    top: 25%;
+    justify-content: center;
+    width: 30%;
+    margin-left: 35%;
+    text-align: center;
+    border-radius: 5px;
+    background-color: rgba(233, 188, 133, 0.737);
+    z-index: 1;
+    display: none;
+    padding-bottom: 12px;
+    padding-top: 2px;
+}
+
+
+.launch-test-button {
+    width: 30%;
+    padding: 10px;
+    border-radius: 5px;
+    color: ivory;
+    text-align: center;
+    cursor: pointer;
+    margin: 5px;
+    background-color: rgba(233, 188, 133, 0.737);
+    margin-left: 35%; /* Espacement entre les boutons */
+    margin-top: 15px;
+}
+
+.launch-test-button:hover {
+    background-color: rgba(222, 179, 125, 0.737);
+}
+
+.launch-test-button:active {
+    background-color: rgba(215, 174, 123, 0.737);
+}
+
+
+.list {
+    cursor:pointer;
+}
+
+.list:hover {
+    font-weight: 1000;
+}
+
+.list:active {
+    font-weight: 500;
+}

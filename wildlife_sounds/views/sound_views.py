@@ -357,7 +357,9 @@ def train(request):
     
     url = "wildlife_sounds/sounds/train_or_test.html"
 
-    context = {'lists' : List.objects.filter(user=request.user),
+    lists = [{'list' : liste, 'nb_species' : SpecieForList.objects.filter(list = liste).count()} for liste in List.objects.filter(user=request.user)]
+
+    context = {'lists' : lists,
                'method' : 'train'}
 
     return render(request, url, context)
@@ -370,7 +372,9 @@ def test(request):
     
     url = "wildlife_sounds/sounds/train_or_test.html"
 
-    context = {'lists' : List.objects.filter(user=request.user),
+    lists = [{'list' : liste, 'nb_species' : SpecieForList.objects.filter(list = liste).count()} for liste in List.objects.filter(user=request.user)]
+
+    context = {'lists' : lists,
                'method' : 'test'}
 
     return render(request, url, context)
