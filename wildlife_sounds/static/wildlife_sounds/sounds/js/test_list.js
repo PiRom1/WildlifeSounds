@@ -25,6 +25,64 @@ document.addEventListener('DOMContentLoaded', async function () {
     };
 
 
+    function validate_input() {
+
+        // Process input
+        let input_value = text_input.value.trim().toLowerCase();
+
+        // Vérifier l'input
+        if (input_value === specieData.vernacular_name.toLowerCase()) {
+            score += 1;
+            nb_vernacular += 1;
+            console.log('nom vernaculaire ok');
+            show_result_popup(true, specieData.vernacular_name, specieData.scientific_name, 1);
+
+        }
+        else if (input_value === specieData.scientific_name.toLowerCase()) {
+            score += 3;
+            nb_scientific += 1;
+            console.log('nom scientifique ok !');
+            show_result_popup(true, specieData.vernacular_name, specieData.scientific_name, 3);
+        }
+        else {
+            console.log('NUL');
+            nb_error += 1;
+            show_result_popup(false, specieData.vernacular_name, specieData.scientific_name, 0);
+        }
+
+        // Mettre à jour le score
+        html_score.innerHTML = score;
+
+        // Incrémenter le compteur
+        text_input.value = '';
+        id += 1;
+        counter.innerHTML = id+1;
+
+        // Passer à l'oiseau suivant (ou fin)
+        if (id + 1 <= parseInt(nb_species)) {
+            specieData = get_specie_data(id);
+            audio.pause();
+            audio.currentTime = 0;
+
+
+            console.log(specieData);
+            sound = specieData.specie_sounds[Math.floor(Math.random() * specieData.specie_sounds.length)]
+            play_sound(sound);
+        }
+
+        if (id + 1 === parseInt(nb_species) + 1) {
+            counter.innerHTML = id;
+            console.log('finito');
+            validate.style.display = 'none';
+            terminer.style.display = 'block';
+            text_input.style.display = 'none';
+            console.log('score : ', score);
+        }
+
+
+    }
+
+
 
     let html_score = document.getElementById('score');
     let score = 0;
@@ -103,58 +161,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     validate.addEventListener('click', function() {
 
-        if (text_input.value.toLowerCase() === specieData.vernacular_name.toLowerCase()) {
-            score += 1;
-            nb_vernacular += 1;
-            console.log('nom vernaculaire ok');
-            show_result_popup(true, specieData.vernacular_name, specieData.scientific_name, 1);
-
-        }
-        else if (text_input.value.toLowerCase() === specieData.scientific_name.toLocaleLowerCase()) {
-            score += 3;
-            nb_scientific += 1;
-            console.log('nom scientifique ok !');
-            show_result_popup(true, specieData.vernacular_name, specieData.scientific_name, 3);
-        }
-        else {
-            console.log('NUL');
-            nb_error += 1;
-            show_result_popup(false, specieData.vernacular_name, specieData.scientific_name, 0);
-        }
-
-        html_score.innerHTML = score;
-
-
-        text_input.value = '';
-
-        // Incremente counter
-        id += 1;
-        counter.innerHTML = id+1;
-
-        
-        if (id + 1 <= parseInt(nb_species)) {
-            specieData = get_specie_data(id);
-            audio.pause();
-            audio.currentTime = 0;
-
-
-            console.log(specieData);
-            sound = specieData.specie_sounds[Math.floor(Math.random() * specieData.specie_sounds.length)]
-            play_sound(sound);
-        }
-
-        if (id + 1 === parseInt(nb_species) + 1) {
-            counter.innerHTML = id;
-            console.log('finito');
-            validate.style.display = 'none';
-            terminer.style.display = 'block';
-            text_input.style.display = 'none';
-            console.log('score : ', score);
-        }
-
-
-
-        
+        validate_input();
         
     })
 
@@ -181,6 +188,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         })
     
+    })
+
+
+    document.addEventListener('keyup', function(e) {
+        
+        if (document.activeElement === text_input && e.key === 'Enter') {
+            validate_input();
+        }
     })
 
 
