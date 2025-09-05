@@ -30,10 +30,10 @@ urlpatterns = [
                path("train", sound_views.train, name="train"),
                path("test", sound_views.test, name="test"),
 
-            # LOAD DATA
-               path('load_data', load_data_views.load_data, name = 'load_data'),
-               path('load_data_xeno_canto', load_data_views.load_data_xeno_canto, name = 'load_data_xenocanto'),
-               path('load_data/<str:name>', load_data_views.load_bird, name = 'load_bird'),
+            # # LOAD DATA
+            #    path('load_data', load_data_views.load_data, name = 'load_data'),
+            #    path('load_data_xeno_canto', load_data_views.load_data_xeno_canto, name = 'load_data_xenocanto'),
+            #    path('load_data/<str:name>', load_data_views.load_bird, name = 'load_bird'),
 
             # SCORES
                path("scores", score_views.scores, name="scores"),

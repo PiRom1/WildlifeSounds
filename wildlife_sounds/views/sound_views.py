@@ -6,7 +6,6 @@ from django.db.models import Q
 import json
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
 import json
-from wildlife_sounds.utils.get_data import load_data_specific_bird_xenocanto
 import random as rd
 
 # Create your views here.
