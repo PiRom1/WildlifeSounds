@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+
+    <link rel="icon" type="image/x-icon" href="/media/86_icon.svg">
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/species/css/specie_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'wildlife_sounds/css/global.css' %}">
+
+</head>
+
+<body>
+
+    <h1>{{specie}}</h1>
+
+    <div class="specie-card">
+        <ul>
+            <li><u>Nom vernaculaire</u> : {{specie.vernacular_name}}</li>
+            <li><u>Nom scientifique</u> : {{specie.scientific_name}}</li>
+            <li><u>Famille</u> : {{specie.family.family_name}}</li>
+            <li><u>Order</u> : {{specie.order.order_name}}</li>
+            <li><u>Genre</u> : {{specie.genus.genus_name}}</li>
+            <li><u>Taxon</u> : {{specie.taxon.taxon_name}}</li>
+        </ul>
+    </div>
+
+</body>

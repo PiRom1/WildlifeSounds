@@ -35,7 +35,8 @@ def get_specie_data_and_sounds(specie, unique=False):
              "taxon_name" : specie.taxon.taxon_name,
              "type_name" : "song",
              "country_name" : "France",
-             "sound_url" : sound.sound.url}
+             "sound_url" : sound.sound.url,
+             "id" : specie.id}
         
         if unique:
             return d

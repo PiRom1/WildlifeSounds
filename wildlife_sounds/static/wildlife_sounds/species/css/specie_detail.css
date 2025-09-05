@@ -1,0 +1,20 @@
+.specie-card ul {
+    color: ivory;
+    font-size: 24px;
+}
+
+.specie-card li {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+
+.specie-card {
+    background-color: rgba(224, 212, 195, 0.75);
+    border-radius: 5px;
+    width: 30%;
+    text-align: left;
+    margin-left: 25px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}

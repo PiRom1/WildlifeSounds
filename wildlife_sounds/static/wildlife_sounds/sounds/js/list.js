@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Créer et ajouter la première cellule (th)
         const th = document.createElement("th");
         th.scope = "row";
-        th.innerHTML = data.vernacular_name;
+        th.innerHTML = `<a href="/specie_detail/${data.id}" style="color: black";>${data.vernacular_name}</a>`;
+        console.log(data);
         row.appendChild(th);
         
         // Créer et ajouter la cellule du haut-parleur
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         row.appendChild(speakerTd);
         
         // Ajouter les autres cellules dynamiquement
-        const keysToIgnore = ["vernacular_name", "sound_url"]; // Éviter les doublons
+        const keysToIgnore = ["vernacular_name", "sound_url", "id"]; // Éviter les doublons
         for (const key in data) {
             if (!keysToIgnore.includes(key)) {
                 const td = document.createElement("td");

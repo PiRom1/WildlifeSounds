@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import sound_views, login_views, load_data_views, utils_views, score_views
+from .views import sound_views, login_views, load_data_views, utils_views, score_views, species_views
 
 urlpatterns = [
             # LOGIN
@@ -38,5 +38,8 @@ urlpatterns = [
             # SCORES
                path("scores", score_views.scores, name="scores"),
                path("fetch_get_scores", score_views.fetch_get_scores, name="fetch_get_scores"),
+            
+            # SPECIES
+               path('specie_detail/<int:id>', species_views.specie_detail, name = 'specie_detail'),
 
                ]

@@ -5,10 +5,13 @@ from django.core.files.base import ContentFile
 import random as rd
 
 
-def request_xenocanto(page = 1):
-    
+
+def request_xenocanto(grp = "birds", page = 1):
+    '''
+    Return every records for a specific grp in xenocanto.
+    '''
     API_URL = "https://www.xeno-canto.org/api/2/recordings"
-    QUERY = "grp:birds cnt:france"
+    QUERY = f"grp:{grp} cnt:france"
 
     r = requests.get(API_URL, params={'query': QUERY, 'page' : page})
 
@@ -17,9 +20,12 @@ def request_xenocanto(page = 1):
 
 
 
-def request_xenocanto_bird(bird_name, page = 1):
+def request_xenocanto_specie(specie_name, page = 1):
+    '''
+    Returns every records for a specific specie in xenocanto 
+    '''
     
-    API_URL = f"https://xeno-canto.org/api/2/recordings?query={bird_name.split(' ')[0].lower()}+{bird_name.split(' ')[1].lower()}"
+    API_URL = f"https://xeno-canto.org/api/2/recordings?query={specie_name.split(' ')[0].lower()}+{specie_name.split(' ')[1].lower()}"
     
     r = requests.get(API_URL, params={'page' : page})
     
@@ -29,13 +35,17 @@ def request_xenocanto_bird(bird_name, page = 1):
 
 
 
+def load_sounds_from_xeno_canto(grp="birds"):
+    """
+    Get and record every sounds of a specific group in the database
+    """
 
-
-
-def load_data_from_xeno_canto():
+    taxon_name = {'birds' : 'Oiseaux',
+                  'frogs' : 'Amphibiens',
+                  'bats' : 'Chiroptères'}
 
     # Get n_pages
-    first_json = request_xenocanto()
+    first_json = request_xenocanto(grp = grp)
     n_pages = first_json.get('numPages')
 
     
@@ -43,13 +53,13 @@ def load_data_from_xeno_canto():
     for n_page in range(n_pages):
         
         print(f'requête n°{n_page + 1} / {n_pages}')
-        json = request_xenocanto(page = n_page+1)
+        json = request_xenocanto(grp = grp, page = n_page+1)
 
         # Loop through the page
         for i,record in enumerate(json.get('recordings')):
             
             # Songs only
-            if record.get('type') == 'song':
+            if record.get('type') == 'song' or grp != 'birds':   # Si oiseaux, doit être un chant. Sinon peu importe
 
                 
                 name = f"{record.get('gen')} {record.get('sp')}"
@@ -111,7 +121,7 @@ def load_data_from_xeno_canto():
                     else: # If genus is not returned by the bird API
                         genus, created = Genus.objects.get_or_create(genus_name = 'Unknown')
 
-                    taxon = Taxon.objects.get(taxon_name = 'Oiseau')
+                    taxon, created = Taxon.objects.get_or_create(taxon_name = taxon_name)
 
                     vernacular_name = specie_data.get('vernacular_name')
 
@@ -160,28 +170,33 @@ def load_data_from_xeno_canto():
 
 
 
+def load_species_from_xeno_canto(grp):
+    '''
+    Get and record in database every specie names from a group in xenocanto.
 
-
-def load_all_species_from_xeno_canto():
+    grp : str, = 'birds', 'bats', 'frogs', ... 
+    '''
 
     # Get n_pages
-    first_json = request_xenocanto()
+    first_json = request_xenocanto(grp=grp)
     n_pages = first_json.get('numPages')
 
+    taxon_name = {'birds' : 'Oiseaux',
+                  'bats' : 'Chiroptères',
+                  'frogs' : 'Amphibiens'}.get(grp)
     
     not_working_species = []
     for n_page in range(n_pages):
         
-        print(f'requête n°{n_page + 1} / {n_pages}')
-        json = request_xenocanto(page = n_page+1)
+        json = request_xenocanto(grp=grp, page = n_page+1)
 
         # Loop through the page
         for i,record in enumerate(json.get('recordings')):
-            
+
 
             name = f"{record.get('gen')} {record.get('sp')}"
-            
-            if not Specie.objects.filter(scientific_name = name) and name not in not_working_species and record.get('type') == 'song': # Si l'espèce n'était pas présente en BDD
+
+            if not Specie.objects.filter(scientific_name = name) and name not in not_working_species: # Si l'espèce n'était pas présente en BDD
             
             
                 print(f"Ajout de l'espèce {name} en cours ...")
@@ -223,7 +238,7 @@ def load_all_species_from_xeno_canto():
                     genus, created = Genus.objects.get_or_create(genus_name = 'Unknown')
 
 
-                taxon, created = Taxon.objects.get_or_create(taxon_name = 'Oiseau')
+                taxon, created = Taxon.objects.get_or_create(taxon_name = taxon_name)
 
                 vernacular_name = specie_data.get('vernacular_name')
 
@@ -246,14 +261,17 @@ def load_all_species_from_xeno_canto():
 
 
 
-def load_data_specific_bird_xenocanto(bird_name):
+def load_data_specific_specie_xenocanto(specie_name):
+    '''
+    Download specie sounds for a specific specie in xenocanto
+    '''
 
     # Get n_pages
-    first_json = request_xenocanto_bird(bird_name)
+    first_json = request_xenocanto_specie(specie_name)
     n_pages = first_json.get('numPages')
     
     for n_page in range(n_pages):
-        json = request_xenocanto_bird(bird_name, page = n_page + 1)
+        json = request_xenocanto_specie(specie_name, page = n_page + 1)
         
         
         for i, record in enumerate(json.get('recordings')):
@@ -294,8 +312,8 @@ def load_data_specific_bird_xenocanto(bird_name):
 
 
 
-def get_data_from_name(name):
-    TAXREF_URL = f"https://taxref.mnhn.fr/api/taxa/fuzzyMatch?term={'%20'.join(name.split(' '))}"    
+def get_data_from_name(specie_name):
+    TAXREF_URL = f"https://taxref.mnhn.fr/api/taxa/fuzzyMatch?term={'%20'.join(specie_name.split(' '))}"    
     r = requests.get(TAXREF_URL)
     json = r.json()
 
