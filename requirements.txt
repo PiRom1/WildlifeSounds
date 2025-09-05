@@ -5,3 +5,4 @@ django-extensions==3.2.3
 djangorestframework==3.15.2
 requests
 pandas
+gunicorn==21.2.0
