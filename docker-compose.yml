@@ -1,10 +1,31 @@
 version: "3.9"
 
 services:
-  web:
-    build: .
+  traefik:
+    image: traefik:v2.14
+    command:
+      - --api.insecure=true
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.myresolver.acme.email=ton_email@example.com
+      - --certificatesresolvers.myresolver.acme.storage=/acme.json
     ports:
-      - "8000:8000"
+      - "80:80"
+      - "443:443"
     volumes:
-      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./acme.json:/acme.json
+      - ./traefik.yml:/traefik.yml
+    container_name: traefik
+
+  web:
+    build: ./app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`ton_domaine.com`)"
+      - "traefik.http.routers.web.entrypoints=websecure"
+      - "traefik.http.routers.web.tls.certresolver=myresolver"
+      - "traefik.http.services.web.loadbalancer.server.port=8000"
     container_name: wildlife_sounds
