@@ -20,14 +20,14 @@ services:
       - ./traefik.yml:/traefik.yml
     container_name: traefik
 
-    web:
-      build: ./app
-      volumes:
+  web:
+    build: ./app
+    volumes:
         - ./app:/app   # monte le code du projet dans le conteneur
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.web.rule=Host(`ton_domaine.com`)"
-        - "traefik.http.routers.web.entrypoints=websecure"
-        - "traefik.http.routers.web.tls.certresolver=myresolver"
-        - "traefik.http.services.web.loadbalancer.server.port=8000"
-      container_name: wildlife_sounds
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(\"ton_domaine.com\")"
+      - "traefik.http.routers.web.entrypoints=websecure"
+      - "traefik.http.routers.web.tls.certresolver=myresolver"
+      - "traefik.http.services.web.loadbalancer.server.port=8000"
+    container_name: wildlife_sounds
