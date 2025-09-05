@@ -1,4 +1,3 @@
-version: "3.9"
 
 services:
   traefik:
@@ -21,9 +20,9 @@ services:
     container_name: traefik
 
   web:
-    build: ./app
+    build: .
     volumes:
-        - ./app:/app   # monte le code du projet dans le conteneur
+        - .:/app   # monte le code du projet dans le conteneur
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.web.rule=Host(\"ton_domaine.com\")"
